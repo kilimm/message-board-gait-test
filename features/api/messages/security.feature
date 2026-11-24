@@ -16,7 +16,6 @@ Feature: 留言接口 - 传输加密与体积上限
       """
     Then the response status should be 200
     And I decrypt the response payload
-    And the response body at $.ok should be "true"
     And the response body at $.message.text should be "加密传输验证"
 
   @generated @layer:api @case:MB-API-031

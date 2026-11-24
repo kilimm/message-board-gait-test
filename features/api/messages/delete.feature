@@ -22,7 +22,7 @@ Feature: 留言接口 - 删除
     Then the response status should be 200
     And I decrypt the response payload
     And the response body at $.total should be "0"
-    Then the database table messages should have 0 rows where text = "待删除留言"
+    Then the database table messages should have 0 row where text = "待删除留言"
 
   @generated @layer:api @case:MB-API-021
   Scenario: 删除不存在的留言返回未找到
