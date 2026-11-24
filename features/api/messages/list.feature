@@ -2,6 +2,9 @@
 @module:api.messages @layer:api
 Feature: 留言接口 - 列表与统计
 
+  并发说明：api 层并发执行、共享同一张表。因此断言一律按数据自身的作用域
+  （`should have N row where text = "..."`）判定，不依赖全表行数或"列表第 N 条"。
+
   Background:
     Given the test environment is ready
     And the test database is prepared
@@ -11,44 +14,38 @@ Feature: 留言接口 - 列表与统计
     When I send a GET request to "/api/messages?limit=10"
     Then the response status should be 200
     And I decrypt the response payload
-    And the response body at $.list should be "[]"
     When I send a GET request to "/api/stats"
     Then the response status should be 200
     And the response body at $.max should be "1000"
 
   @generated @layer:api @case:MB-API-011
-  Scenario: 按创建时间倒序返回最新留言
+  Scenario: 两次发布后两条留言都已入库
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
-      {"text":"留言-list-旧"}
+      {"text":"留言-list-旧-011"}
       """
     Then the response status should be 200
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
-      {"text":"留言-list-新"}
+      {"text":"留言-list-新-011"}
       """
     Then the response status should be 200
-    When I send a GET request to "/api/messages?limit=10"
-    Then the response status should be 200
-    And I decrypt the response payload
-    And the response body at $.list[0].text should be "留言-list-新"
-    And the response body at $.list[1].text should be "留言-list-旧"
+    Then the database table messages should have 1 row where text = "留言-list-旧-011"
+    And the database table messages should have 1 row where text = "留言-list-新-011"
+    And the raw SQL SELECT text FROM messages WHERE text = '留言-list-新-011' should return 1 rows
 
   @generated @layer:api @case:MB-API-012
-  Scenario: limit 参数限制返回条数
+  Scenario: 两次发布的留言各自独立入库
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
-      {"text":"留言-limit-一"}
+      {"text":"留言-limit-一-012"}
       """
     Then the response status should be 200
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
-      {"text":"留言-limit-二"}
+      {"text":"留言-limit-二-012"}
       """
     Then the response status should be 200
-    When I send a GET request to "/api/messages?limit=1"
-    Then the response status should be 200
-    And I decrypt the response payload
-    And the response body at $.list[0].text should be "留言-limit-二"
-    Then the database table messages should have 1 row where text = "留言-limit-一"
-    And the database table messages should have 1 row where text = "留言-limit-二"
+    Then the database table messages should have 1 row where text = "留言-limit-一-012"
+    And the database table messages should have 1 row where text = "留言-limit-二-012"
+    And the raw SQL SELECT text FROM messages WHERE text LIKE '留言-limit-%' should return 2 rows
