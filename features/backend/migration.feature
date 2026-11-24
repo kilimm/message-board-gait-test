@@ -5,7 +5,7 @@ Feature: 旧数据迁移与备份
   Scenario: 导入旧 SQLite 数据并改名备份
     Given the test database is prepared
     When [agent] 放置旧 SQLite 文件并启动服务
-    Then the database table "messages" should have 1 row where "content" = "旧留言"
+    Then the database table "messages" should have 1 row where "text" = "旧留言"
     And [agent] 旧 SQLite 文件被改名为 .bak 备份
 
   @generated @layer:db @case:FP-005-002
