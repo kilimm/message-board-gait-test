@@ -12,12 +12,12 @@ Feature: 留言接口 - 创建
   Scenario: 合法加密留言创建成功并写入数据库
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
-      {"text":"留言-create-001"}
+      {"text":"留言-create-001-unique"}
       """
     Then the response status should be 200
     And I decrypt the response payload
-    And the response body at $.message.text should be "留言-create-001"
-    Then the database table messages should have 1 row where text = "留言-create-001"
+    And the response body at $.message.text should be "留言-create-001-unique"
+    Then the database table messages should have 1 row where text = "留言-create-001-unique"
 
   @generated @layer:api @case:MB-API-002
   Scenario: 非法密文包被拒绝且不写库

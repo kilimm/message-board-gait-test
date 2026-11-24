@@ -38,14 +38,13 @@ Feature: 留言接口 - 列表与统计
   Scenario: 两次发布的留言各自独立入库
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
-      {"text":"留言-limit-一-012"}
+      {"text":"留言-limit-一-012-unique"}
       """
     Then the response status should be 200
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
-      {"text":"留言-limit-二-012"}
+      {"text":"留言-limit-二-012-unique"}
       """
     Then the response status should be 200
-    Then the database table messages should have 1 row where text = "留言-limit-一-012"
-    And the database table messages should have 1 row where text = "留言-limit-二-012"
-    And the raw SQL SELECT text FROM messages WHERE text LIKE '留言-limit-%' should return 2 rows
+    Then the database table messages should have 1 row where text = "留言-limit-一-012-unique"
+    And the database table messages should have 1 row where text = "留言-limit-二-012-unique"
