@@ -1,4 +1,3 @@
-# language: zh-CN
 # generated-by: git-ai-test-flow
 @module:web.publish @layer:ui
 Feature: 留言板前端 - 发布留言

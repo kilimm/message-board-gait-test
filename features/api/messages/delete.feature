@@ -1,4 +1,3 @@
-# language: zh-CN
 # generated-by: git-ai-test-flow
 @module:api.messages @layer:api
 Feature: 留言接口 - 删除
