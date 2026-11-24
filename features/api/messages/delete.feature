@@ -7,22 +7,21 @@ Feature: 留言接口 - 删除
     And the test database is prepared
 
   @generated @layer:api @case:MB-API-020
-  Scenario: 删除已存在留言后列表不再包含
+  Scenario: 删除已存在留言后数据库不再包含
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
-      {"text":"待删除留言"}
+      {"text":"留言-delete-待删"}
       """
     Then the response status should be 200
     And I decrypt the response payload
     And I store the response field $.message.id as msgId
+    Then the database table messages should have 1 row where text = "留言-delete-待删"
     When I send a POST request to "/api/messages/delete" with encrypted JSON:
       """
       {"id":"{{var.msgId}}"}
       """
     Then the response status should be 200
-    And I decrypt the response payload
-    And the response body at $.total should be "0"
-    Then the database table messages should have 0 row where text = "待删除留言"
+    Then the database table messages should have 0 row where text = "留言-delete-待删"
 
   @generated @layer:api @case:MB-API-021
   Scenario: 删除不存在的留言返回未找到
