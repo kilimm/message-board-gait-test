@@ -6,7 +6,7 @@ Feature: 列表轮询、增量渲染与删除
     Given I am on the "/" page
     When [agent] 等待 5 秒并收到包含新留言的列表
     Then the page should contain "新留言"
-    And [agent] 仅新增未知 id 的留言而不重复渲染已知留言
+    And [agent] 统计页面上每条可见留言文本，确认新留言仅出现一次且没有重复的留言条目
 
   @generated @layer:ui @case:FP-008-002
   Scenario: 留言文本按纯文本转义渲染

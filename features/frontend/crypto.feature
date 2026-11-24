@@ -18,6 +18,6 @@ Feature: 传输加密协议与口令派生
   @generated @layer:ui @case:FP-001-003
   Scenario: 密文损坏时返回格式错误
     Given I am on the "/" page
-    When [agent] 提交截断的密文包
+    When [agent] 在页面的密文输入框中填入截断的密文包字符串 "U2FsdGVkX1+AbCdEfGh"（人为截断、缺少完整分组的 base64 密文，不足以解出完整 IV 与密文块），然后点击页面的提交按钮发送请求
     Then the response status should be 400
     And the response body should contain error code "INVALID_CIPHER"
