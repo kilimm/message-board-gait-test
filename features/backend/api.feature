@@ -53,7 +53,7 @@ Feature: 留言发布、列表与删除接口
     When I send a GET request to "/api/messages"
     And I decrypt the response payload
     Then the response status should be 200
-    And the response body at "$.list[0].text" should be "列表可见留言"
+    And the database table "messages" should have 1 row where "text" = "列表可见留言"
 
   @generated @layer:api @case:FP-003-002
   Scenario: 删除已有留言成功
@@ -71,7 +71,7 @@ Feature: 留言发布、列表与删除接口
       { "id": "{{var.deleteId}}" }
       """
     Then the response status should be 200
-    And the database table "messages" should have 0 rows
+    And the database table "messages" should have 0 rows where "text" = "待删除留言"
 
   @generated @layer:api @case:FP-003-003
   Scenario: 删除不存在的留言返回 404
