@@ -11,7 +11,8 @@ Feature: 留言接口 - 千条上限裁剪（需串行执行）
 
   @generated @layer:db @case:MB-API-004
   Scenario: 表内达到一千条后再发布会裁剪最旧一条
-    Given the database table messages should have 1000 row
+    Given I clean up the database rows in messages where text = "留言-trim-最新"
+    And the database table messages should have 1000 row
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
       {"text":"留言-trim-最新"}

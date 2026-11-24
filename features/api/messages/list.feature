@@ -20,6 +20,8 @@ Feature: 留言接口 - 列表与统计
 
   @generated @layer:api @case:MB-API-011
   Scenario: 两次发布后两条留言都已入库
+    Given I clean up the database rows in messages where text = "留言-list-旧-011"
+    And I clean up the database rows in messages where text = "留言-list-新-011"
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
       {"text":"留言-list-旧-011"}
@@ -36,6 +38,8 @@ Feature: 留言接口 - 列表与统计
 
   @generated @layer:api @case:MB-API-012
   Scenario: 两次发布的留言各自独立入库
+    Given I clean up the database rows in messages where text = "留言-limit-一-012-unique"
+    And I clean up the database rows in messages where text = "留言-limit-二-012-unique"
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
       {"text":"留言-limit-一-012-unique"}

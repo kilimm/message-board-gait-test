@@ -8,6 +8,7 @@ Feature: 留言接口 - 删除
 
   @generated @layer:api @case:MB-API-020
   Scenario: 删除已存在留言后数据库不再包含
+    Given I clean up the database rows in messages where text = "留言-delete-待删-unique"
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
       {"text":"留言-delete-待删-unique"}

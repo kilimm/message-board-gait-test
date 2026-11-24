@@ -10,6 +10,7 @@ Feature: 留言接口 - 创建
 
   @generated @layer:api @case:MB-API-001
   Scenario: 合法加密留言创建成功并写入数据库
+    Given I clean up the database rows in messages where text = "留言-create-001-unique"
     When I send a POST request to "/api/messages" with encrypted JSON:
       """
       {"text":"留言-create-001-unique"}
