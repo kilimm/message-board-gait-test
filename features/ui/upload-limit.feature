@@ -1,8 +1,8 @@
 # generated-by: git-ai-test-flow
-@module:ui.image @layer:ui @case:AUTO-UI
+@module:unknown @layer:ui @case:AUTO-UI
 Feature: 图片上传大小限制
 
-  @module:ui.image @layer:ui
+  @module:unknown @layer:ui
   Scenario: 上传超过 500x500 的图片应被拒绝
     Given the user opens the upload page
     When the user uploads an image larger than 500x500
